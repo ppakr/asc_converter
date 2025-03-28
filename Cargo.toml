@@ -1,0 +1,8 @@
+[package]
+name = "asc_converter"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+esri_ascii_grid = "0.4.5"
+image = "0.25.6"
