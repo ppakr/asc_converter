@@ -1,4 +1,3 @@
-use std::f32::consts::E;
 use std::fs::File;
 use esri_ascii_grid::ascii_file::EsriASCIIReader;
 use image::GrayImage;
@@ -6,7 +5,8 @@ use image::Luma;
 
 fn main(){
     // Open the ESRI ASCII grid file
-    let file = File::open("test_data/LITTO3D_FRA_0925_6223_MNT_20150529_LAMB93_RGF93_IGN69.asc").expect("Failed to open file");
+    // let file = File::open("test_data/LITTO3D_FRA_0925_6223_MNT_20150529_LAMB93_RGF93_IGN69.asc").expect("Failed to open file");
+    let file = File::open("test_data/LITTO3D_FRA_0925_6224_MNT_20150529_LAMB93_RGF93_IGN69.asc").expect("Failed to open file");
     let mut grid: EsriASCIIReader<File, f64, f64> =
         EsriASCIIReader::from_file(file).expect("Failed to read ASCII grid");
 
