@@ -3,7 +3,7 @@ use esri_ascii_grid::ascii_file::EsriASCIIReader;
 
 fn main(){
     // Open the ESRI ASCII grid file
-    let file = File::open("test_data/test.asc").expect("Failed to open file");
+    let file = File::open("test_data/LITTO3D_FRA_0925_6223_MNT_20150529_LAMB93_RGF93_IGN69.asc").expect("Failed to open file");
     let mut grid: EsriASCIIReader<File, f64, f64> =
         EsriASCIIReader::from_file(file).expect("Failed to read ASCII grid");
 
