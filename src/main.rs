@@ -59,11 +59,11 @@ fn main(){
     // println!("min_y: {}", header.min_y());
     // println!("max_y: {}", header.max_y());
 
-    let row = header.num_rows();
-    let col = header.num_cols();
+    let rows = header.num_rows();
+    let cols = header.num_cols();
 
     // create 2d vector to store the values
-    let mut values = vec![vec![0.0; col]; row];
+    let mut values = vec![vec![0.0; cols]; rows];
     let mut min_val = f64::MAX;
     let mut max_val = f64::MIN;
 
@@ -80,15 +80,16 @@ fn main(){
     }
 
     // normalize values
-    let mut img = GrayImage::new(c as u32, r as u32);
-    for row in 0..r{
-        for col in 0..c{
+    let mut img = GrayImage::new(cols as u32, rows as u32);
+    for row in 0..rows {
+        for col in 0..cols {
             let value = values[row][col];
-            let pixel = if value == nodata{0} else {
+            let pixel = if value == nodata { 0 } else {
                 let norm = ((value - min_val) / (max_val - min_val) * 255.0).round() as u8;
                 norm
             };
-            img.put_pixel(col as u32, row as u32, Luma([pixel]));
+            // Flip vertically to match image coordinates
+            img.put_pixel(col as u32, (rows - 1 - row) as u32, Luma([pixel]));
         }
     }
 
