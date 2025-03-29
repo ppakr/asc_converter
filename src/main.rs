@@ -33,24 +33,27 @@ fn ascii_to_image<P: AsRef<Path>>(path: P) -> Result<GrayImage, String> {
     let mut min_val = f64::MAX;
     let mut max_val = f64::MIN;
 
+    // Read the grid values
     for cell in grid.into_iter() {
         if let Ok((row, col, value)) = cell {
             values[row][col] = value;
             if value != nodata {
                 min_val = min_val.min(value);
                 max_val = max_val.max(value);
+                // println!("Row: {}, Col: {}, Value: {}", row, col, value);
             }
         }
     }
-
+    // Create a new grayscale image
     let mut img = GrayImage::new(cols as u32, rows as u32);
     for row in 0..rows {
         for col in 0..cols {
             let value = values[row][col];
             let pixel = if value == nodata {
-                0
+                0 // Black
             } else {
-                ((value - min_val) / (max_val - min_val) * 255.0).round() as u8
+                // Normalize the value to the range [0, 255]
+                ((value - min_val) / (max_val - min_val) * 255.0).round() as u8 
             };
             img.put_pixel(col as u32, (rows - 1 - row) as u32, Luma([pixel]));
         }
@@ -60,7 +63,8 @@ fn ascii_to_image<P: AsRef<Path>>(path: P) -> Result<GrayImage, String> {
 }
 
 fn display_image(img: &GrayImage) -> Result<(), Box<dyn std::error::Error>> {
-    // Convert grayscale to RGB
+    // Convert grayscale to RGB because GrayImage is not supported by show-image
+    // Create a new RGB image
     let mut rgb_img = RgbImage::new(img.width(), img.height());
     for (x, y, gray_pixel) in img.enumerate_pixels() {
         let gray = gray_pixel[0];
