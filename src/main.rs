@@ -2,7 +2,8 @@ use std::fs::File;
 use std::path::Path;
 use esri_ascii_grid::ascii_file::EsriASCIIReader;
 use image::{GrayImage, Luma, RgbImage, Rgb};
-// use show_image::{ImageView, ImageInfo, create_window};
+// use show_image::create_window;
+use show_image::{ImageView, ImageInfo, create_window};
 
 #[show_image::main]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -12,10 +13,33 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // I wasn't able to display the image because I had some issue with X11 setup
     // I'll use save image instsead
-    image.save("output.png").expect("Failed to save image");
-    println!("Image saved as output.png");
+    // image.save("output.png").expect("Failed to save image");
+    // println!("Image saved as output.png");
+
+
+    // transform grey -> RGB
+    let mut rgb_img = RgbImage::new(image.width(), image.height());
+    for (x, y, gray_pixel) in image.enumerate_pixels(){
+        let gray = gray_pixel[0];
+        // println!("!!");
+        rgb_img.put_pixel(x, y, Rgb([gray, gray, gray]));
+    }
+    // print typr rgb image
+
+    
+    print_type(&rgb_img); // -> type is image::buffer_::ImageBuffer<image::color::Rgb<u8>, alloc::vec::Vec<u8>>
+    
+    // display img
+    let info = show_image::ImageInfo::rgb8(rgb_img.width(), rgb_img.height());
+    let view = show_image::ImageView::new(info, rgb_img.as_raw());
+    let window = create_window("image", Default::default())?;
+    window.set_image("image-001", rgb_img)?; //แก้ type bcuz not supported
 
     Ok(())
+}
+
+fn print_type<T>(_: &T) { 
+    println!("{:?}", std::any::type_name::<T>());
 }
 
 fn ascii_to_image<P: AsRef<Path>>(path: P) -> Result<GrayImage, String> {
