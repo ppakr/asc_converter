@@ -11,30 +11,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let image = ascii_to_image("test_data/LITTO3D_FRA_0926_6224_MNT_20150529_LAMB93_RGF93_IGN69.asc").expect("Failed to create image");
     // display_image(&image)?;
 
-    // I wasn't able to display the image because I had some issue with X11 setup
-    // I'll use save image instsead
-    // image.save("output.png").expect("Failed to save image");
-    // println!("Image saved as output.png");
-
-
-    // transform grey -> RGB
-    let mut rgb_img = RgbImage::new(image.width(), image.height());
-    for (x, y, gray_pixel) in image.enumerate_pixels(){
-        let gray = gray_pixel[0];
-        // println!("!!");
-        rgb_img.put_pixel(x, y, Rgb([gray, gray, gray]));
-    }
-    // print typr rgb image
-
     
-    print_type(&rgb_img); // -> type is image::buffer_::ImageBuffer<image::color::Rgb<u8>, alloc::vec::Vec<u8>>
+    
+    // transform grey -> RGB
+    // let mut rgb_img = RgbImage::new(image.width(), image.height());
+    // for (x, y, gray_pixel) in image.enumerate_pixels(){
+    //     let gray = gray_pixel[0];
+    //     // println!("!!");
+    //     rgb_img.put_pixel(x, y, Rgb([gray, gray, gray]));
+    // }
+    // print typr rgb image
+    
+    
+    // print_type(&rgb_img); // -> type is image::buffer_::ImageBuffer<image::color::Rgb<u8>, alloc::vec::Vec<u8>>
     
     // display img
-    let info = show_image::ImageInfo::rgb8(rgb_img.width(), rgb_img.height());
-    let view = show_image::ImageView::new(info, rgb_img.as_raw());
-    let window = create_window("image", Default::default())?;
-    window.set_image("image-001", rgb_img)?; //แก้ type bcuz not supported
-
+    // let info = show_image::ImageInfo::rgb8(rgb_img.width(), rgb_img.height());
+    // let view = show_image::ImageView::new(info, rgb_img.as_raw());
+    // let window = create_window("image", Default::default())?;
+    // window.set_image("image-001", rgb_img)?; //แก้ type bcuz not supported
+    
+    // I wasn't able to display the image because I had some issue with X11 setup
+    // I'll use save image instsead
+    image.save("output.png").expect("Failed to save image");
+    println!("Image saved as output.png");
     Ok(())
 }
 
